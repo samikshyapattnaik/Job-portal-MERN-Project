@@ -60,18 +60,20 @@ const MyJobs = () => {
     })
   }
   // function for deleting
-  const deleteJob = async(jobId) =>{
-    await axios.delete(`http://localhost:4000/api/v1/job/delete/${jobId}`,
-      {
-        withCredentials:true,
-      }).then(res =>{
-          toast.success(res.data.message)
-          setMyjobs( prevJobs=>prevJobs.filter(job=>job._id!== jobId))
-        })
-        .catch((err )=> {
-          toast.error(err.response.data.message)
-  })    
+  const deleteJob = async (jobId) => {
+  try {
+    const res = await axios.delete(
+      `http://localhost:4000/api/v1/job/delete/${jobId}`,
+      { withCredentials: true }
+    );
+    toast.success(res.data.message);
+    setMyjobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+  } catch (err) {
+    const message = err?.response?.data?.message || "Failed to delete job";
+    toast.error(message);
   }
+};
+
   //update the job object in the jobs state with the new value
   const InputChange =(jobId , field , value)=>{
     setMyjobs((prevJobs)=>

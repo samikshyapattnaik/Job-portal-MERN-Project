@@ -90,7 +90,7 @@ export const postApplication = catchAsyncError(async (req, res, next) => {
   }
   const { name, email, coverLetter, phone, address, jobId } = req.body;
   const applicantID = {
-    user: req.User._id,
+    user: Employer._id,
     role: "Job Seeker",
   };
   if (!jobId) {
