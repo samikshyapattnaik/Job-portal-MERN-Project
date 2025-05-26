@@ -18,6 +18,12 @@ app.use(
   })
 );
 app.use(cookieParser());
+res.cookieParser("token", token, {
+  httpOnly: true,
+  sameSite: "None",
+  secure: true,
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
