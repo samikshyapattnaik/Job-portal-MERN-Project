@@ -132,11 +132,6 @@ export const updateJob = catchAsyncError(async (req, res, next) => {
 //     message: "Job deleted successfully!",
 //   });
 // })
-
-import Job from '../models/jobModel.js';
-import ErrorHandler from '../utils/errorHandler.js';
-import catchAsyncError from '../middlewares/catchAsyncError.js';
-
 export const deleteJob = catchAsyncError(async (req, res, next) => {
   const { role } = req.User;
 
