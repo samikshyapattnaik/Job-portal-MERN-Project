@@ -20,7 +20,7 @@ const MyJobs = () => {
   useEffect(()=>{
     const fetchMyJobs = async ()=>{
       try{
-        const {data} = await axios.get("http://localhost:4000/api/v1/job/getmyjob",
+        const {data} = await axios.get("https://job-portal-mern-project.onrender.com/api/v1/job/getmyjob",
           {withCredentials:true});
         setMyjobs(data.myJobs)
       }catch(error){
@@ -49,7 +49,7 @@ const MyJobs = () => {
    //function for  updatating data
    const updateJob = async(jobId) => {
     const updatedJob = myJobs.find(job=>job._id === jobId)
-    await axios.put(`http://localhost:4000/api/v1/job/update/${jobId}`,updatedJob,{
+    await axios.put(`https://job-portal-mern-project.onrender.com/api/v1/job/update/${jobId}`,updatedJob,{
       withCredentials:true,
     }).then((res)=>{
       toast.success(res.data.message)
@@ -63,7 +63,7 @@ const MyJobs = () => {
   const deleteJob = async (jobId) => {
   try {
     const res = await axios.delete(
-      `http://localhost:4000/api/v1/job/delete/${jobId}`,
+      `https://job-portal-mern-project.onrender.com/api/v1/job/delete/${jobId}`,
       { withCredentials: true }
     );
     toast.success(res.data.message);
