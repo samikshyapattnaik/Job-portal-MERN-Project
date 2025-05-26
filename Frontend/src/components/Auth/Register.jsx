@@ -1,3 +1,4 @@
+
 import React, { useContext, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlineMailOutline } from "react-icons/md";
@@ -16,10 +17,16 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
 
-  const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
+  const { isAuthorized, setIsAuthorized } = useContext(Context);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (!email || !name || !phone || !password || !role) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
     try {
       const { data } = await axios.post(
         "https://job-portal-mern-project.onrender.com/api/v1/user/register",
@@ -31,6 +38,7 @@ const Register = () => {
           withCredentials: true,
         }
       );
+
       toast.success(data.message);
       setName("");
       setEmail("");
@@ -39,14 +47,15 @@ const Register = () => {
       setRole("");
       setIsAuthorized(true);
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error?.response?.data?.message || "Registration failed. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
-  if(isAuthorized){
-    return <Navigate to={'/'}/>
+  if (isAuthorized) {
+    return <Navigate to={"/"} />;
   }
-
 
   return (
     <>
@@ -56,11 +65,11 @@ const Register = () => {
             <img src="/JobZeelogo.png" alt="logo" />
             <h3>Create a new account</h3>
           </div>
-          <form>
+          <form onSubmit={handleRegister}>
             <div className="inputTag">
               <label>Register As</label>
               <div>
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <select value={role} onChange={(e) => setRole(e.target.value)} required>
                   <option value="">Select Role</option>
                   <option value="employee">Employer</option>
                   <option value="Job Seeker">Job Seeker</option>
@@ -76,6 +85,7 @@ const Register = () => {
                   placeholder="Enter your name here"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
                 <FaPencilAlt />
               </div>
@@ -97,11 +107,11 @@ const Register = () => {
               <label>Phone Number</label>
               <div>
                 <input
-                  type="number"
+                  type="tel"
                   placeholder="12345678"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                
+                  required
                 />
                 <FaPhoneFlip />
               </div>
@@ -114,13 +124,12 @@ const Register = () => {
                   placeholder="Your Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <RiLock2Fill />
               </div>
             </div>
-            <button type="submit" onClick={handleRegister}>
-              Register
-            </button>
+            <button type="submit">Register</button>
             <Link to={"/login"}>Login Now</Link>
           </form>
         </div>
